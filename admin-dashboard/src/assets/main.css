@@ -1,0 +1,10 @@
+.active {
+    color: #42b983;
+    pointer-events: none; 
+}
+
+.exact-active-link {
+    color: #42b983;
+    font-weight: bold;
+    pointer-events: none; 
+}
