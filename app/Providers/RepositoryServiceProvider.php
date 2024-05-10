@@ -14,6 +14,7 @@ class RepositoryServiceProvider extends ServiceProvider
     protected $repositoryBinding = [
         'App\Repositories\Interfaces\User\UserGroupRepositoryInterface' => 'App\Repositories\User\UserGroupRepository',
         'App\Repositories\Interfaces\User\UserRepositoryInterface' => 'App\Repositories\User\UserRepository',
+        'App\Repositories\Interfaces\ProvinceRepositoryInterface' => 'App\Repositories\ProvinceRepository',
     ];
     public function register(): void
     {

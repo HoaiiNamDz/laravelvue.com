@@ -13,10 +13,15 @@ export default {
     props: ['pageTitle', 'previousPage'],
     setup() {
         const changeRouter = (previousPage) => {
-            if (previousPage === 'Dashboard') {
-                return { name: 'dashboard' };
-            } else if (previousPage === 'Quản lý nhóm thành viên') {
-                return { name: 'users.group' };
+            switch (previousPage) {
+                case 'Dashboard':
+                    return { name: 'dashboard' };
+                case 'Quản lý nhóm thành viên':
+                    return { name: 'users.group' };
+                case 'Quản lý thành viên':
+                    return { name: 'users' };
+                default:
+                    break;
             }
         }
         return { changeRouter }

@@ -87,7 +87,6 @@ export default {
                 router.push({ query: queryString })
         }
         onMounted(() => {
-            console.log(endpoint);
             perpageValue.value = queryPerpage ?? 4
             searchValue.value.searchKeyword = queryKeyword ?? ''
             searchValue.value.selectedOption = queryPublish ?? 0

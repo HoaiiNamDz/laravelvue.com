@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-12 h-screen bg-gray-200">
+    <div class="grid grid-cols-12 h-screen overflow-auto bg-gray-200">
         <Sidebar class="col-span-2" />
         <div class="col-span-10">
             <Navbar />

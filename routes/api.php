@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\User\UserGroupController;
 use App\Http\Controllers\Api\V1\User\UserController;
+use App\Http\Controllers\Api\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,6 @@ Route::put('/users/group/update/status/multiple', [UserGroupController::class, '
 Route::get('/users', [UserController::class, 'index'])->name('users');
 Route::put('/users/update/status', [UserController::class, 'updateStatus'])->name('users.update.status');
 Route::put('/users/update/status/multiple', [UserController::class, 'updateStatusMultiple'])->name('users.update.status.multiple');
+
+// LOCATION
+Route::get('/provinces', [LocationController::class, 'provinces'])->name('provinces');

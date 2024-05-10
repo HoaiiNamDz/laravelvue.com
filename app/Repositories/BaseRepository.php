@@ -88,4 +88,8 @@ class BaseRepository implements BaseRepositoryInterface
         $model->save();
         return $model;
     }
+
+    public function all() {
+        return $this->model->all();
+    }
 }
