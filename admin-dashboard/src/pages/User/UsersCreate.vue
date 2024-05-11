@@ -139,8 +139,8 @@
                         <div class="">
                             <label for="">Thành phố</label>
                             <span class="text-red-600"> *</span>
-                            <select class="outline-none border rounded-md p-2 w-full mt-2" @change="getDistricts(formData.provinceId)" v-model="formData.provinceId">
-                                <option :value="province.code" v-for="province in provinces" :key="province.code">{{province.name}}</option>
+                            <select class="outline-none border rounded-md p-2 w-full mt-2" @change="getLocations(formData.provinceId, 'districts')" v-model="formData.provinceId">
+                                <option v-for="province in provinces" :key="province.code" :value="province.code" >{{province.name}}</option>
                             </select>
                             <p v-if="formErrorMessages.province" class="text-red-600 italic">
                                 *{{ formErrorMessages.province }}
@@ -149,8 +149,8 @@
                         <div class="">
                             <label for="">Quận/Huyện</label>
                             <span class="text-red-600"> *</span>
-                            <select class="outline-none border rounded-md p-2 w-full mt-2" v-model="formData.district">
-                                <option :value="district.id" v-for="district in formData.districts" :key="district.id">{{district}}</option>
+                            <select class="outline-none border rounded-md p-2 w-full mt-2" @change="getLocations(formData.districtId, 'wards')" v-model="formData.districtId">
+                                <option v-for="district in locations.districts" :key="district.code" :value="district.code" >{{district.name}}</option>
                             </select>
                             <p v-if="formErrorMessages.district" class="text-red-600 italic">
                                 *{{ formErrorMessages.district }}
@@ -159,8 +159,8 @@
                         <div class="">
                             <label for="">Phường/Xã</label>
                             <span class="text-red-600"> *</span>
-                            <select class="outline-none border rounded-md p-2 w-full mt-2" v-model="formData.ward">
-                                <option :value="ward.id" v-for="ward in formData.wards" :key="ward.id">{{ward}}</option>
+                            <select class="outline-none border rounded-md p-2 w-full mt-2" v-model="formData.wardId">
+                                <option v-for="ward in locations.wards" :key="ward.code" :value="ward.code">{{ward.name}}</option>
                             </select>
                             <p v-if="formErrorMessages.ward" class="text-red-600 italic">
                                 *{{ formErrorMessages.ward }}
@@ -187,7 +187,7 @@ import 'vue3-toastify/dist/index.css';
 import { useRouter } from 'vue-router'
 import { handleFormError } from '@/helper/helper.js'
 
-import { useProvinces } from '@/services/Location.js'
+import { getProvinces, fetchLocation } from '@/services/Location.js'
 export default defineComponent({
     components: {Breadcrumb},
     setup() {
@@ -204,10 +204,10 @@ export default defineComponent({
             repassword: '',
             avatar: '',
             address: '',
-            provinceId: '0',
-            districtId: '0',
-            wardsId: '0',
-            usersGroupId: '0'
+            provinceId: 0,
+            districtId: 0,
+            wardId: 0,
+            usersGroupId: 0
         })
         const formErrorMessages = ref({})
         const router = useRouter()
@@ -235,18 +235,23 @@ export default defineComponent({
             }
         }
 
-        const getDistricts = (id) => {
-            console.log(id);
-        }
-
         let provinces = ref([{code: 0, name: 'Chọn thành phố'}])
-        const {provinceValues, getProvinces } = useProvinces()
-        watchEffect(() => {
-            if (provinceValues.value.length > 0) {
-                provinces.value = provinces.value.concat(provinceValues.value);
+        const locations = ref({
+            districts: [{code: 0, name: 'Chọn quận/huyện'}],
+            wards: [{code: 0, name: 'Chọn phường/xã'}],
+        })
+        
+        const getLocations = async (id, relation) => {
+            const newLocations = await fetchLocation(id, relation);
+            const mergedLocations = [locations.value[relation][0], ...newLocations];
+            locations.value[relation] = mergedLocations;
+            if(relation === 'districts') {
+                formData.value.districtId = 0
+                formData.value.wardId = 0
+            } else {
+                formData.value.wardId = 0
             }
-        });
-
+        }
         onMounted( async () => {
             switch (router.currentRoute.value.params.action) {
                 case 'group/create':
@@ -262,13 +267,14 @@ export default defineComponent({
                 default:
                     break;
             }
+            
             await getUsersGroup()
-            await getProvinces()
+            provinces.value = [provinces.value[0], ...await getProvinces()]
         })
         return { pageTitle, formData, create, 
             formErrorMessages, previousPage, detailDescription, 
             contactDescription, endpoint, getUsersGroup ,
-            getDistricts, usersGroup, provinces
+            getLocations, usersGroup, locations, provinces
         }
     }
 })

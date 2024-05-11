@@ -15,6 +15,7 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Repositories\Interfaces\User\UserGroupRepositoryInterface' => 'App\Repositories\User\UserGroupRepository',
         'App\Repositories\Interfaces\User\UserRepositoryInterface' => 'App\Repositories\User\UserRepository',
         'App\Repositories\Interfaces\ProvinceRepositoryInterface' => 'App\Repositories\ProvinceRepository',
+        'App\Repositories\Interfaces\DistrictRepositoryInterface' => 'App\Repositories\DistrictRepository',
     ];
     public function register(): void
     {

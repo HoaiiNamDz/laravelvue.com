@@ -42,7 +42,7 @@ class BaseRepository implements BaseRepositoryInterface
     }
 
     public function findById(
-        $modelId,
+        int $modelId,
         array $column = ['*'],
         array $relation = []
     ) {

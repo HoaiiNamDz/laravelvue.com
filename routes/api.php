@@ -43,3 +43,4 @@ Route::put('/users/update/status/multiple', [UserController::class, 'updateStatu
 
 // LOCATION
 Route::get('/provinces', [LocationController::class, 'provinces'])->name('provinces');
+Route::get('/locations', [LocationController::class, 'locations'])->name('locations');

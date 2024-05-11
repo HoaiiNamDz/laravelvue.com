@@ -3,13 +3,13 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class Province extends Model
+class Ward extends Model
 {
-    protected $table = 'provinces';
+    protected $table = 'wards';
     protected $primaryKey = 'code';
     public $incrementing = false;
-
+    
     public function districts() {
-        return $this->hasMany(District::class, 'province_code', 'code');
+        return $this->belongsTo(District::class, 'district_code', 'code');
     }
 }
